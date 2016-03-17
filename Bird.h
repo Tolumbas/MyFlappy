@@ -7,10 +7,14 @@ private:
 	sf::Sprite bird;
 	float vx, vy;
 	float gravity;
+	sf::Image image;
+	sf::Texture texture;
 public:
 	Bird();
+	bool Coltopbot();
 	void jump();
 	void update();
+	void reset();
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
 	sf::VertexArray m_vertices;

@@ -1,22 +1,16 @@
 #include <SFML/Graphics.hpp>
 #include "bird.h"
 #include <iostream>
+#include "main.h"
 
 void main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Flappy!");
 	Bird bird;
-	/*
-	sf::Texture t;
-	t.loadFromFile("img/flappy.png");
+	Walls walls;
+	short state = 0;
 
-	sf::Sprite test;
-	test.setTexture(t);*/
 
-	sf::Texture png = sf::Texture();
-	png.loadFromFile("img/flappy.png");
-
-	sf::Sprite test(png);
 
 	while (window.isOpen())
 	{
@@ -27,15 +21,24 @@ void main()
 			// Close window: exit
 			if (event.type == sf::Event::Closed)
 				window.close();
-			if (event.type == sf::Event::KeyPressed) {
-				bird.jump();
-				std::cout << "jump\n";
+			if (state == 0) {
+				if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Space)) {
+					bird.jump();
+					std::cout << "jump\n";
+				}
+				if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Escape)) {
+					state = 1;
+					window.close();
+				}
 			}
 		}
-		
-		window.draw(bird);
-		//window.draw(test);
-		//bird.update();
+		if (state == 0) {
+			window.draw(bird);
+			bird.update();
+		}
+		if (state == 1) {
+
+		}
 		window.display();
 	}
 }
