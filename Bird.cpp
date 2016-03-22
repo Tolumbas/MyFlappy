@@ -1,7 +1,7 @@
 #include "Bird.h"
 #include <math.h>
 #include <iostream>
-#define M_PI 3.141592f
+#define M_PI 3.14159265359f
 Bird::Bird()
 {
 	//image = sf::Image();
