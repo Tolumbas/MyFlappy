@@ -21,6 +21,10 @@ void Game::update() {
 			else {
 				walls[a]->update(diff);
 			}
+			float x = walls[a]->getX();
+			float y = walls[a]->getY();
+			float offset = walls[a]->getOffset();
+			//if()
 		}
 
 		bird->update(diff);
