@@ -13,7 +13,8 @@ public:
 	Bird();
 	bool Coltopbot();
 	void jump();
-	void update();
+	void coutPos();
+	void update(float);
 	void reset();
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;

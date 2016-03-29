@@ -21,14 +21,21 @@ bool Bird::Coltopbot()
 
 void Bird::jump()
 {
-	vy = -0.5;
+	vy = -0.5f;
 }
 
-void Bird::update()
+void Bird::coutPos()
 {
-	vy += gravity;
+	std::cout << vy << '\n';
+}
+
+void Bird::update(float diff)
+{
+	//diff = diff/3;
+	//std::cout << diff << '\n';
+	vy += gravity*diff;
 	//std::cout << vx << vy;
-	bird.move(vx, vy);
+	bird.move(vx*diff, vy*diff);
 	bird.setRotation(asin(vy)*180/M_PI);
 }
 

@@ -23,7 +23,7 @@ public:
 	void reset();
 	bool out();
 	bool Colision(Bird&);
-	void update();
+	void update(float);
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 	~Wall();
 };

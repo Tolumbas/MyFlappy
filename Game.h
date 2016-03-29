@@ -23,8 +23,8 @@ private:
 	Bird* bird;
 	vector<Wall*>  walls;
 	short state;
-	sf::Thread updateT;
-	sf::Thread drawT;
+	int timer;
+	int spawntimer;
 	sf::RenderWindow window;
 };
 

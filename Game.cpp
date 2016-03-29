@@ -1,42 +1,44 @@
 #include "Game.h"
 void Game::update() {
-	int timer = getTime();
-	while (window.isOpen()) {
-		int timeNow = getTime();
-		int diff = timer - timeNow;
-		
-		if (state == 0) {
-			if (diff>= 500) {
-				walls.push_back(new Wall(-rand() % 300));
-				timer = timeNow;
-			}
+	int timeNow = getTime();
+	int diff = timeNow-timer;
+	if (diff <= 0)diff = 1;
 
-			for (unsigned int a = 0;a < walls.size();a++) {
-				if (walls[a]->out()) {
-					delete walls[a];
-					walls.erase(walls.begin() + a);
-				}
-				else {
-					walls[a]->update();
-				}
-			}
+	//std::cout << diff << '\n';
+	timer = timeNow;
 
-			bird->update();
+	if (state == 0) {
+		if (timeNow-spawntimer>1800) {
+			walls.push_back(new Wall(-rand() % 300));
+			spawntimer = timeNow;
 		}
-		if (state == 1) {
 
+		for (unsigned int a = 0;a < walls.size();a++) {
+			if (walls[a]->out()) {
+				delete walls[a];
+				walls.erase(walls.begin() + a);
+			}
+			else {
+				walls[a]->update(diff);
+			}
 		}
+
+		bird->update(diff);
+		bird->coutPos();
 	}
+	if (state == 1) {
+
+	}
+	
 }
 
-Game::Game() : updateT(&Game::update, this), drawT(&Game::draw, this)
+Game::Game()
 {
-	sf::Thread updateT(&Game::update);
-	sf::Thread drawT(&Game::draw);
 	srand(time(NULL));
 	bird = new Bird();
 	state = 0;
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Flappy!");
+	window.create(sf::VideoMode(800, 600), "Flappy!");
+	window.setFramerateLimit(120);
 }
 
 
@@ -48,9 +50,14 @@ Game::~Game()
 	delete bird;
 }
 void Game::run() {
-
-	draw.launch();
-	update.launch();
+	timer = getTime();
+	spawntimer = timer;
+	while (window.isOpen()) 
+	{
+		update();
+		draw();
+		eventHandler();
+	}
 }
 void Game::eventHandler() {
 	sf::Event event;
@@ -73,20 +80,16 @@ void Game::eventHandler() {
 }
 int Game::getTime()
 {
-	return clock()/ CLOCKS_PER_SEC*1000;
+	//std::cout << "clock: " << clock() / (float)CLOCKS_PER_SEC * 1000 << '\n';
+	return clock()/(float)CLOCKS_PER_SEC * 1000;
 }
 void Game::draw()
 {
-	while(window.isOpen()){
-		window.clear();
-	
-		for (unsigned int a = 0;a < walls.size();a++) {
-			window.draw(*walls[a]);
-		}
-		window.draw(*bird);
-
-		window.display();
-		
+	window.clear();
+	for (unsigned int a = 0;a < walls.size();a++) {
+		window.draw(*walls[a]);
 	}
+	window.draw(*bird);
+	window.display();
 	
 }
