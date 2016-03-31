@@ -39,6 +39,15 @@ void Bird::update(float diff)
 	bird.setRotation(asin(vy)*180/M_PI);
 }
 
+float Bird::getY()
+{
+	return bird.getPosition().y;
+}
+float Bird::getX()
+{
+	return bird.getPosition().x;
+}
+
 void Bird::reset()
 {
 	vx = 0;

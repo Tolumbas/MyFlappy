@@ -15,6 +15,8 @@ public:
 	void jump();
 	void coutPos();
 	void update(float);
+	float getX();
+	float getY();
 	void reset();
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;

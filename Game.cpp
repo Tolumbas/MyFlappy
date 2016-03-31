@@ -7,7 +7,7 @@ void Game::update() {
 	//std::cout << diff << '\n';
 	timer = timeNow;
 
-	if (state == 0) {
+	if (state == 0 && !gameover) {
 		if (timeNow-spawntimer>1800) {
 			walls.push_back(new Wall(-rand() % 300));
 			spawntimer = timeNow;
@@ -21,17 +21,43 @@ void Game::update() {
 			else {
 				walls[a]->update(diff);
 			}
-			float x = walls[a]->getX();
-			float y = walls[a]->getY();
+			float wx = walls[a]->getX()+5;
+			float ww = 140.0f;
+			float wh = 376.0f;
+			float gap = walls[a]->getGap();
 			float offset = walls[a]->getOffset();
-			//if()
+			float bx = bird->getX()-2;
+			float by = bird->getY()-2;
+			float bw = 50.0f;
+
+			if (bx + bw >= wx && bx <= wx + ww && (by <= offset + wh || by + bw >= offset + wh + gap)) {
+				std::cout << " wall colision\n";
+				gameover = true;
+			}
+			if (bird->Coltopbot()) {
+				std::cout << "bondry colision\n";
+				gameover = true;
+			}
+			if (bx + bw >= wx && bx <= wx + ww && scored == false) {
+				score.itterate();
+				scored = true;
+			}
+			if (scored == true) {
+				bool t;
+			}
 		}
 
 		bird->update(diff);
-		bird->coutPos();
+		//bird->coutPos();
+	}
+	if (state == 0 && gameover) {
+		bird->update(diff);
+		if (bird->Coltopbot()) {
+			state = 1;
+		}
 	}
 	if (state == 1) {
-
+		
 	}
 	
 }
@@ -41,6 +67,10 @@ Game::Game()
 	srand(time(NULL));
 	bird = new Bird();
 	state = 0;
+	score.reset();
+	scored = false;
+
+	gameover = false;
 	window.create(sf::VideoMode(800, 600), "Flappy!");
 	window.setFramerateLimit(120);
 }
@@ -71,9 +101,28 @@ void Game::eventHandler() {
 		if (event.type == sf::Event::Closed)
 			window.close();
 		if (state == 0) {
-			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Space)) {
-				bird->jump();
-				std::cout << "jump\n";
+			if (!gameover) {
+				if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Space)) {
+					bird->jump();
+					std::cout << "jump\n";
+				}
+			}
+			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Escape)) {
+				state = 1;
+				window.close();
+			}
+		}
+		if (state == 1) {
+			if (event.type == sf::Event::KeyPressed && !(event.key.code == sf::Keyboard::Escape)) {
+				bird->reset();
+				std::cout << "new Game\n";
+				for (unsigned int a = 0;a < walls.size();a++) {
+					delete walls[a];
+				}
+				walls.clear();
+				score.reset();
+				gameover = false;
+				state = 0;
 			}
 			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Escape)) {
 				state = 1;
@@ -93,6 +142,7 @@ void Game::draw()
 	for (unsigned int a = 0;a < walls.size();a++) {
 		window.draw(*walls[a]);
 	}
+	window.draw(score);
 	window.draw(*bird);
 	window.display();
 	
