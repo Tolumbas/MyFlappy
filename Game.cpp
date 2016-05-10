@@ -26,9 +26,10 @@ void Game::update() {
 			float wh = 376.0f;
 			float gap = walls[a]->getGap();
 			float offset = walls[a]->getOffset();
-			float bx = bird->getX()-2;
-			float by = bird->getY()-2;
+			float bx = bird->getX()-25;
+			float by = bird->getY()-25;
 			float bw = 50.0f;
+			bool scored = walls[a]->scored;
 
 			if (bx + bw >= wx && bx <= wx + ww && (by <= offset + wh || by + bw >= offset + wh + gap)) {
 				std::cout << " wall colision\n";
@@ -38,16 +39,19 @@ void Game::update() {
 				std::cout << "bondry colision\n";
 				gameover = true;
 			}
-			if (bx + bw >= wx && bx <= wx + ww && scored == false) {
-				score.itterate();
-				scored = true;
+			if (bx + bw >= wx && bx <= wx + ww) {
+				if (scored == false) {
+					score.itterate();
+					walls[a]->scored = true;
+				}
 			}
-			if (scored == true) {
-				bool t;
-			}
+			/*else if (scored == true) {
+				scored = false;
+			}*/
 		}
 
 		bird->update(diff);
+		//background.move(diff);
 		//bird->coutPos();
 	}
 	if (state == 0 && gameover) {
@@ -68,7 +72,6 @@ Game::Game()
 	bird = new Bird();
 	state = 0;
 	score.reset();
-	scored = false;
 
 	gameover = false;
 	window.create(sf::VideoMode(800, 600), "Flappy!");
@@ -139,6 +142,7 @@ int Game::getTime()
 void Game::draw()
 {
 	window.clear();
+	window.draw(background);
 	for (unsigned int a = 0;a < walls.size();a++) {
 		window.draw(*walls[a]);
 	}

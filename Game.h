@@ -8,6 +8,7 @@
 #include "bird.h"
 #include "wall.h"
 #include "Score.h"
+#include "Background.h"
 
 using namespace std;
 
@@ -19,13 +20,15 @@ public:
 	void run();
 private:
 	vector<Wall*>  walls;
+	Score score;
+	Bird* bird;
+	Background background;
+
 	short state;
 	int timer;
 	int spawntimer;
 	sf::RenderWindow window;
-	Score score;
-	Bird* bird;
-	bool scored;
+
 	bool gameover;
 
 	void update();

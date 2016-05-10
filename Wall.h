@@ -23,6 +23,7 @@ public:
 	void reset();
 	bool out();
 	float getX();
+	bool scored;
 	float getGap();
 	float getY();
 	float getOffset();

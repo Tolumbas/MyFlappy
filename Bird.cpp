@@ -16,7 +16,7 @@ Bird::Bird()
 bool Bird::Coltopbot()
 {
 	sf::Vector2f coords = bird.getPosition();
-	return (coords.y < 0 || coords.y + 50>600);
+	return (coords.y < 25.0f || coords.y + 25>600);
 }
 
 void Bird::jump()
