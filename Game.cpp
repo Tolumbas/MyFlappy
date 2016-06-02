@@ -8,7 +8,7 @@ void Game::update() {
 	timer = timeNow;
 
 	if (state == 0 && !gameover) {
-		if (timeNow-spawntimer>1800) {
+		if (timeNow-spawntimer>2000) {
 			walls.push_back(new Wall(-rand() % 300));
 			spawntimer = timeNow;
 		}
@@ -34,14 +34,18 @@ void Game::update() {
 			if (bx + bw >= wx && bx <= wx + ww && (by <= offset + wh || by + bw >= offset + wh + gap)) {
 				std::cout << " wall colision\n";
 				gameover = true;
+				Sbuf.play();
 			}
 			if (bird->Coltopbot()) {
 				std::cout << "bondry colision\n";
 				gameover = true;
+				bird->stop();
+				Sbuf.play();
 			}
-			if (bx + bw >= wx && bx <= wx + ww) {
+			if (bx-75 + bw >= wx && bx-75 <= wx + ww) {
 				if (scored == false) {
 					score.itterate();
+					Scling.play();
 					walls[a]->scored = true;
 				}
 			}
@@ -51,12 +55,12 @@ void Game::update() {
 		}
 
 		bird->update(diff);
-		//background.move(diff);
+		background.move(diff);
 		//bird->coutPos();
 	}
 	if (state == 0 && gameover) {
 		bird->update(diff);
-		if (bird->Coltopbot()) {
+		if (bird->Colbot()) {
 			state = 1;
 		}
 	}
@@ -70,6 +74,10 @@ Game::Game()
 {
 	srand(time(NULL));
 	bird = new Bird();
+	cling.loadFromFile("sounds/get_point.ogg");
+	buf.loadFromFile("sounds/die.ogg");
+	Scling.setBuffer(cling);
+	Sbuf.setBuffer(buf);
 	state = 0;
 	score.reset();
 

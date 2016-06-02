@@ -5,6 +5,7 @@ using namespace std;
 class Background : public Drawable
 {
 private:
+	float speed = -0.6f;
 	Texture backgroundTexture;
 	Texture groundTexture;
 	Sprite background;

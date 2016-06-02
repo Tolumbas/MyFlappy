@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector> 
 #include <time.h>
 #include <stdlib.h>
@@ -23,6 +24,10 @@ private:
 	Score score;
 	Bird* bird;
 	Background background;
+	SoundBuffer cling;
+	SoundBuffer buf;
+	Sound Scling;
+	Sound Sbuf;
 
 	short state;
 	int timer;

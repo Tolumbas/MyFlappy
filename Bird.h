@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class Bird : public sf::Drawable
 {
@@ -8,10 +9,14 @@ private:
 	float vx, vy;
 	float gravity;
 	sf::Image image;
+	sf::SoundBuffer flap;
+	sf::Sound Sflap;
 	sf::Texture texture;
 public:
 	Bird();
 	bool Coltopbot();
+	void stop();
+	bool Colbot();
 	void jump();
 	void coutPos();
 	void update(float);

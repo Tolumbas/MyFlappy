@@ -8,7 +8,8 @@ Bird::Bird()
 	image.loadFromFile("img/flappy.png");
 	texture.loadFromImage(image);
 	bird.setTexture(texture);
-	
+	flap.loadFromFile("sounds/go_up.ogg");
+	Sflap.setBuffer(flap);
 	reset();
 	
 }
@@ -18,9 +19,20 @@ bool Bird::Coltopbot()
 	sf::Vector2f coords = bird.getPosition();
 	return (coords.y < 25.0f || coords.y + 25>600);
 }
+bool Bird::Colbot()
+{
+	sf::Vector2f coords = bird.getPosition();
+	return  coords.y + 25>600;
+}
+void Bird::stop()
+{
+	vy = 0;
+}
 
 void Bird::jump()
 {
+
+	Sflap.play();
 	vy = -0.5f;
 }
 
